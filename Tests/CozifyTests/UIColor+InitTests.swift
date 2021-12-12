@@ -87,4 +87,11 @@ final class UIColorInitTests: XCTestCase {
             colorFromString.isEqualAfterConvertsToSameColorSpace(UIColor.white.withAlphaComponent(0.5))
         )
     }
+    
+    func testInitWithUncorrectParameters() {
+        // String hex
+        let stringColor = "#ffffff01"
+        let colorFromString = UIColor(hex: stringColor, alpha: 0.4)
+        XCTAssertNil(colorFromString)
+    }
 }
