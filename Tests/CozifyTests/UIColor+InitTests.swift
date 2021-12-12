@@ -55,4 +55,36 @@ final class UIColorInitTests: XCTestCase {
         let colorFromString = UIColor(hex: stringColor)!
         XCTAssertFalse(colorFromString.isEqualAfterConvertsToSameColorSpace(UIColor.white))
     }
+    
+    func testInitHexIntWhiteAlpha05EqualWhiteAlpha05() throws {
+        // Int hex
+        let intColor = 0xffffff
+        let colorFromInt = UIColor(hex: intColor, alpha: 0.5)
+        XCTAssertTrue(
+            colorFromInt.isEqualAfterConvertsToSameColorSpace(UIColor.white.withAlphaComponent(0.5))
+        )
+        
+        // String hex
+        let stringColor = "#ffffff"
+        let colorFromString = UIColor(hex: stringColor, alpha: 0.5)!
+        XCTAssertTrue(
+            colorFromString.isEqualAfterConvertsToSameColorSpace(UIColor.white.withAlphaComponent(0.5))
+        )
+    }
+    
+    func testInitHexIntWhiteAlpha04EqualWhiteAlpha05() throws {
+        // Int hex
+        let intColor = 0xffffff
+        let colorFromInt = UIColor(hex: intColor, alpha: 0.4)
+        XCTAssertFalse(
+            colorFromInt.isEqualAfterConvertsToSameColorSpace(UIColor.white.withAlphaComponent(0.5))
+        )
+        
+        // String hex
+        let stringColor = "#ffffff"
+        let colorFromString = UIColor(hex: stringColor, alpha: 0.4)!
+        XCTAssertFalse(
+            colorFromString.isEqualAfterConvertsToSameColorSpace(UIColor.white.withAlphaComponent(0.5))
+        )
+    }
 }
