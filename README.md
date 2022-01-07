@@ -25,3 +25,9 @@ let float2 = ...
 float1.isNearlyEqual(to: float2)
 ```
 
+## Locale
+
+```swift
+// Preferred language code ("ru", "en" ...)
+let preferredLanguageCode = Locale.preferredLanguageCode
+```
