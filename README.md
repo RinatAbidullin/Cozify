@@ -39,4 +39,16 @@ let preferredLanguageCode = Locale.preferredLanguageCode
 if Environment.isProduction {
     // do something
 }
+
+// or look at the current configuration
+switch Environment.configuration {
+case .debug:
+    // do something
+case .simulator:
+    // do something
+case .testflight:
+    // do something
+case .production:
+    // do something
+}
 ```
