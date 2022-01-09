@@ -68,18 +68,37 @@ public struct Environment {
         let firstAppliedConfiguration = Self.firstAppliedConfiguration?.rawValue ?? "undefined"
         let appliedConfigurations = Self.appliedConfigurations.map{ $0.rawValue }
         
+        let isSandboxReceiptContained: Bool?
+        if let path = Bundle.main.appStoreReceiptURL?.path {
+            isSandboxReceiptContained = Self.isSandboxReceiptContained(in: path)
+        } else {
+            isSandboxReceiptContained = nil
+        }
+        
         var description = "First applied configuration = \(firstAppliedConfiguration)\n"
         description += "Applied configurations = \(appliedConfigurations)\n"
         description += "More detailed:\n"
         description += "isDebug = \(Self.isDebug)\n"
         description += "isSimulator = \(Self.isSimulator)\n"
         description += "isTestFlight = \(Self.isTestFlight)\n"
-        description += "isProduction (App Store) = \(Self.isProduction)"
+        description += "isProduction (App Store) = \(Self.isProduction)\n"
+        description += "Private:\n"
+        description += "isSandboxReceiptContained = \(isSandboxReceiptContained?.description ?? "missing path")\n"
+        description += "hasEmbeddedMobileProvision = \(Self.hasEmbeddedMobileProvision)"
         
         return description
     }()
     
+    // MARK: - Private
+    
     private static func isSandboxReceiptContained(in path: String) -> Bool {
         return path.contains("sandboxReceipt")
     }
+    
+    private static let hasEmbeddedMobileProvision: Bool = {
+        if Bundle.main.path(forResource: "embedded", ofType: "mobileprovision") != nil {
+            return true
+        }
+        return false
+    }()
 }
