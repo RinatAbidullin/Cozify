@@ -43,16 +43,8 @@ public struct Environment {
         return !Self.isSandboxReceiptContained(in: path)
     }()
     
-    public static let firstAppliedConfiguration: Configuration = {
-        if Self.isDebug {
-            return .debug
-        } else if Self.isSimulator {
-            return .simulator
-        } else if Self.isTestFlight {
-            return .testflight
-        } else {
-            return .production
-        }
+    public static let firstAppliedConfiguration: Configuration? = {
+        return Self.appliedConfigurations.first
     }()
     
     public static let appliedConfigurations: [Configuration] = {
@@ -73,14 +65,17 @@ public struct Environment {
     }()
     
     public static let description: String = {
-        var description = "First applied configuration = \(Self.firstAppliedConfiguration)\n"
-        let configurations = Self.appliedConfigurations.map{ $0.rawValue }
-        description += "Applied configurations = \(configurations)\n"
+        let firstAppliedConfiguration = Self.firstAppliedConfiguration?.rawValue ?? "undefined"
+        let appliedConfigurations = Self.appliedConfigurations.map{ $0.rawValue }
+        
+        var description = "First applied configuration = \(firstAppliedConfiguration)\n"
+        description += "Applied configurations = \(appliedConfigurations)\n"
         description += "More detailed:\n"
         description += "isDebug = \(Self.isDebug)\n"
         description += "isSimulator = \(Self.isSimulator)\n"
         description += "isTestFlight = \(Self.isTestFlight)\n"
         description += "isProduction (App Store) = \(Self.isProduction)"
+        
         return description
     }()
     
