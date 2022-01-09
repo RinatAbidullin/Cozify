@@ -59,11 +59,14 @@ public struct Environment {
         var configurations: [Configuration] = []
         if Self.isDebug {
             configurations.append(.debug)
-        } else if Self.isSimulator {
+        }
+        if Self.isSimulator {
             configurations.append(.simulator)
-        } else if Self.isTestFlight {
+        }
+        if Self.isTestFlight {
             configurations.append(.testflight)
-        } else {
+        }
+        if Self.isProduction {
             configurations.append(.production)
         }
         return configurations
