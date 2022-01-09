@@ -32,11 +32,11 @@ float1.isNearlyEqual(to: float2)
 let preferredLanguageCode = Locale.preferredLanguageCode
 ```
 
-## Bundle
+## Environment
 
 ```swift
 // Determine if the application is installed from the App Store
-if Bundle.main.isProduction {
+if Environment.isProduction {
     // do something
 }
 ```
