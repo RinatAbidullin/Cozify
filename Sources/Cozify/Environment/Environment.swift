@@ -34,13 +34,13 @@ public struct Environment {
     public static var isTestFlight: Bool = {
         guard !Self.isSimulator else { return false }
         guard let path = Bundle.main.appStoreReceiptURL?.path else { return false }
-        return Self.isSandboxReceiptContained(in: path)
+        return Self.isSandboxReceiptContained(in: path) && !Self.hasEmbeddedMobileProvision
     }()
     
     public static var isProduction: Bool = {
         guard !Self.isSimulator, !Self.isTestFlight else { return false }
         guard let path = Bundle.main.appStoreReceiptURL?.path else { return true }
-        return !Self.isSandboxReceiptContained(in: path)
+        return !(Self.isSandboxReceiptContained(in: path) || Self.hasEmbeddedMobileProvision)
     }()
     
     public static let firstAppliedConfiguration: Configuration? = {
