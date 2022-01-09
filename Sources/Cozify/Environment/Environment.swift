@@ -32,17 +32,18 @@ public struct Environment {
     }()
     
     public static var isTestFlight: Bool = {
-        guard !Self.isDebug, !Self.isSimulator else { return false }
+        guard !Self.isSimulator else { return false }
         guard let path = Bundle.main.appStoreReceiptURL?.path else { return false }
-        return path.contains("sandboxReceipt")
+        return Self.isSandboxReceiptContained(in: path)
     }()
     
     public static var isProduction: Bool = {
-        guard !Self.isDebug, !Self.isSimulator, !Self.isTestFlight else { return false }
-        return true
+        guard !Self.isSimulator, !Self.isTestFlight else { return false }
+        guard let path = Bundle.main.appStoreReceiptURL?.path else { return true }
+        return !Self.isSandboxReceiptContained(in: path)
     }()
     
-    public static let configuration: Configuration = {
+    public static let firstAppliedConfiguration: Configuration = {
         if Self.isDebug {
             return .debug
         } else if Self.isSimulator {
@@ -54,8 +55,23 @@ public struct Environment {
         }
     }()
     
+    public static let appliedConfigurations: [Configuration] = {
+        var configurations: [Configuration] = []
+        if Self.isDebug {
+            configurations.append(.debug)
+        } else if Self.isSimulator {
+            configurations.append(.simulator)
+        } else if Self.isTestFlight {
+            configurations.append(.testflight)
+        } else {
+            configurations.append(.production)
+        }
+        return configurations
+    }()
+    
     public static let description: String = {
-        var description = "Current configuration = \(Self.configuration.rawValue)\n"
+        var description = "First applied configuration = \(Self.firstAppliedConfiguration)\n"
+        description += "Applied configurations = \(Self.appliedConfigurations)\n"
         description += "More detailed:\n"
         description += "isDebug = \(Self.isDebug)\n"
         description += "isSimulator = \(Self.isSimulator)\n"
@@ -63,4 +79,8 @@ public struct Environment {
         description += "isProduction (App Store) = \(Self.isProduction)"
         return description
     }()
+    
+    private static func isSandboxReceiptContained(in path: String) -> Bool {
+        return path.contains("sandboxReceipt")
+    }
 }
