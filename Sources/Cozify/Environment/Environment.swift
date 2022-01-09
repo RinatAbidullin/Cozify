@@ -8,7 +8,7 @@
 import Foundation
 
 public struct Environment {
-    public enum Configuration {
+    public enum Configuration: String {
         case debug
         case simulator
         case testflight
@@ -32,25 +32,35 @@ public struct Environment {
     }()
     
     public static var isTestFlight: Bool = {
-        guard !isDebug, !isSimulator else { return false }
+        guard !Self.isDebug, !Self.isSimulator else { return false }
         guard let path = Bundle.main.appStoreReceiptURL?.path else { return false }
         return path.contains("sandboxReceipt")
     }()
     
     public static var isProduction: Bool = {
-        guard !isDebug, !isSimulator, !isTestFlight else { return false }
+        guard !Self.isDebug, !Self.isSimulator, !Self.isTestFlight else { return false }
         return true
     }()
     
     public static let configuration: Configuration = {
-        if isDebug {
+        if Self.isDebug {
             return .debug
-        } else if isSimulator {
+        } else if Self.isSimulator {
             return .simulator
-        } else if isTestFlight {
+        } else if Self.isTestFlight {
             return .testflight
         } else {
             return .production
         }
+    }()
+    
+    public static let description: String = {
+        var description = "Current configuration = \(Self.configuration.rawValue)\n"
+        description += "More detailed\n"
+        description += "isDebug = \(Self.isDebug)\n"
+        description += "isSimulator = \(Self.isSimulator)\n"
+        description += "isTestFlight = \(Self.isTestFlight)\n"
+        description += "isProduction (App Store) = \(Self.isProduction)"
+        return description
     }()
 }
