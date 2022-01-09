@@ -74,7 +74,8 @@ public struct Environment {
     
     public static let description: String = {
         var description = "First applied configuration = \(Self.firstAppliedConfiguration)\n"
-        description += "Applied configurations = \(Self.appliedConfigurations)\n"
+        let configurations = Self.appliedConfigurations.map{ $0.rawValue }
+        description += "Applied configurations = \(configurations)\n"
         description += "More detailed:\n"
         description += "isDebug = \(Self.isDebug)\n"
         description += "isSimulator = \(Self.isSimulator)\n"
