@@ -38,7 +38,7 @@ public struct Environment {
     }()
     
     public static var isProduction: Bool = {
-        guard !isTestFlight else { return false }
+        guard !isDebug, !isSimulator, !isTestFlight else { return false }
         return true
     }()
     
