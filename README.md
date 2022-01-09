@@ -31,3 +31,12 @@ float1.isNearlyEqual(to: float2)
 // Preferred language code ("ru", "en" ...)
 let preferredLanguageCode = Locale.preferredLanguageCode
 ```
+
+## Bundle
+
+```swift
+// Determine if the application is installed from the App Store
+if Bundle.main.isProduction {
+    // do something
+}
+```
