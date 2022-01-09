@@ -43,10 +43,6 @@ public struct Environment {
         return !(Self.isSandboxReceiptContained(in: path) || Self.hasEmbeddedMobileProvision)
     }()
     
-    public static let firstAppliedConfiguration: Configuration? = {
-        return Self.appliedConfigurations.first
-    }()
-    
     public static let appliedConfigurations: [Configuration] = {
         var configurations: [Configuration] = []
         if Self.isDebug {
@@ -65,7 +61,6 @@ public struct Environment {
     }()
     
     public static let description: String = {
-        let firstAppliedConfiguration = Self.firstAppliedConfiguration?.rawValue ?? "undefined"
         let appliedConfigurations = Self.appliedConfigurations.map{ $0.rawValue }
         
         let isSandboxReceiptContained: Bool?
@@ -75,16 +70,15 @@ public struct Environment {
             isSandboxReceiptContained = nil
         }
         
-        var description = "First applied configuration = \(firstAppliedConfiguration)\n"
-        description += "Applied configurations = \(appliedConfigurations)\n"
+        var description = "Applied configurations = \(appliedConfigurations)\n"
         description += "More detailed:\n"
-        description += "isDebug = \(Self.isDebug)\n"
-        description += "isSimulator = \(Self.isSimulator)\n"
-        description += "isTestFlight = \(Self.isTestFlight)\n"
-        description += "isProduction (App Store) = \(Self.isProduction)\n"
+        description += "  isDebug = \(Self.isDebug)\n"
+        description += "  isSimulator = \(Self.isSimulator)\n"
+        description += "  isTestFlight = \(Self.isTestFlight)\n"
+        description += "  isProduction (App Store) = \(Self.isProduction)\n"
         description += "Private:\n"
-        description += "isSandboxReceiptContained = \(isSandboxReceiptContained?.description ?? "missing path")\n"
-        description += "hasEmbeddedMobileProvision = \(Self.hasEmbeddedMobileProvision)"
+        description += "  isSandboxReceiptContained = \(isSandboxReceiptContained?.description ?? "missing path")\n"
+        description += "  hasEmbeddedMobileProvision = \(Self.hasEmbeddedMobileProvision)"
         
         return description
     }()
