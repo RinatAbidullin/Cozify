@@ -56,7 +56,7 @@ public struct Environment {
     
     public static let description: String = {
         var description = "Current configuration = \(Self.configuration.rawValue)\n"
-        description += "More detailed\n"
+        description += "More detailed:\n"
         description += "isDebug = \(Self.isDebug)\n"
         description += "isSimulator = \(Self.isSimulator)\n"
         description += "isTestFlight = \(Self.isTestFlight)\n"
