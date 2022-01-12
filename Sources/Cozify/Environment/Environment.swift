@@ -10,6 +10,7 @@ import Foundation
 public struct Environment {
     public enum Configuration: String {
         case debug
+        case unitOrUiTest
         case simulator
         case testflight
         case production
@@ -43,6 +44,16 @@ public struct Environment {
         return !(Self.isSandboxReceiptContained(in: path) || Self.hasEmbeddedMobileProvision)
     }()
     
+    public static var isUnitOrUiTest: Bool = {
+        if
+            NSClassFromString("XCTest") != nil ||
+            UserDefaults.standard.value(forKey: "XCTIDEConnectionTimeout") != nil
+        {
+            return true
+        }
+        return false
+    }()
+    
     public static let appliedConfigurations: [Configuration] = {
         var configurations: [Configuration] = []
         if Self.isDebug {
@@ -56,6 +67,9 @@ public struct Environment {
         }
         if Self.isProduction {
             configurations.append(.production)
+        }
+        if Self.isUnitOrUiTest {
+            configurations.append(.unitOrUiTest)
         }
         return configurations
     }()
@@ -72,13 +86,14 @@ public struct Environment {
         
         var description = "Applied configurations = \(appliedConfigurations)\n"
         description += "More detailed:\n"
-        description += "  isDebug = \(Self.isDebug)\n"
-        description += "  isSimulator = \(Self.isSimulator)\n"
-        description += "  isTestFlight = \(Self.isTestFlight)\n"
-        description += "  isProduction (App Store) = \(Self.isProduction)\n"
+        description += "    isDebug = \(Self.isDebug)\n"
+        description += "    isUnitOrUiTest = \(Self.isUnitOrUiTest)\n"
+        description += "    isSimulator = \(Self.isSimulator)\n"
+        description += "    isTestFlight = \(Self.isTestFlight)\n"
+        description += "    isProduction (App Store) = \(Self.isProduction)\n"
         description += "Private:\n"
-        description += "  isSandboxReceiptContained = \(isSandboxReceiptContained?.description ?? "missing path")\n"
-        description += "  hasEmbeddedMobileProvision = \(Self.hasEmbeddedMobileProvision)"
+        description += "    isSandboxReceiptContained = \(isSandboxReceiptContained?.description ?? "missing path")\n"
+        description += "    hasEmbeddedMobileProvision = \(Self.hasEmbeddedMobileProvision)"
         
         return description
     }()
