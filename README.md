@@ -51,3 +51,12 @@ Environment.appliedConfigurations.forEach { configuration in
     }
 }
 ```
+
+## URL
+
+```swift
+// URLResponse status code
+if let statusCode = response.statusCode {
+    // do something
+}
+```
