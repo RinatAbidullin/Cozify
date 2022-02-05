@@ -2,6 +2,12 @@
 
 Cozify is a collection of extensions that simplify working with swift code.
 
+## Installation
+
+### Swift Package Manager
+
+The [Swift Package Manager](https://swift.org/package-manager/) automates the distribution of Swift code. To use Cozify with SPM, add a dependency to `https://github.com/RinatAbidullin/Cozify`
+
 ## UIColor
 
 ### Convenience init
