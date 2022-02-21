@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension UIView {
+public extension UIView {
     /// The point converted to the window base coordinate system
     var originPositionRelativeToWindowBaseCoordinates: CGPoint? {
         return superview?.convert(frame.origin, to: nil)

@@ -76,3 +76,39 @@ let point = someView.originPositionRelativeToWindowBaseCoordinates
 // The frame converted to the window base coordinate system
 let frame = someView.framePositionRelativeToWindowBaseCoordinates
 ```
+
+## Control Function Executed
+
+```swift
+// Throttler
+let workForSelectedItemFromSettingsTable: Throttler = Throttler()
+
+func tableView(
+    _ tableView: UITableView, 
+    willSelectRowAt indexPath: IndexPath
+) -> IndexPath? {
+    workForSelectedItemFromSettingsTable.throttle(
+        delay: .milliseconds(120)
+    ) { [weak self] in
+        guard let self = self else { return }
+        // do something
+    }()
+    return nil
+}
+
+// Debouncer
+let workForSelectedItemFromSettingsTable: Debouncer = Debouncer()
+
+func tableView(
+    _ tableView: UITableView, 
+    willSelectRowAt indexPath: IndexPath
+) -> IndexPath? {
+    workForSelectedItemFromSettingsTable.debounce(
+        delay: .milliseconds(120)
+    ) { [weak self] in
+        guard let self = self else { return }
+        // do something
+    }()
+    return nil
+}
+```
