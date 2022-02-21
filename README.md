@@ -66,3 +66,13 @@ if let statusCode = response.statusCode {
     // do something
 }
 ```
+
+## View
+
+```swift
+// The point converted to the window base coordinate system
+let point = someView.originPositionRelativeToWindowBaseCoordinates
+
+// The frame converted to the window base coordinate system
+let frame = someView.framePositionRelativeToWindowBaseCoordinates
+```
