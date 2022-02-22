@@ -80,7 +80,8 @@ let frame = someView.framePositionRelativeToWindowBaseCoordinates
 ## Control Function Executed
 
 ```swift
-// Throttler
+// Throttler:
+
 let workForSelectedItemFromSettingsTable: Throttler = Throttler()
 
 func tableView(
@@ -96,7 +97,8 @@ func tableView(
     return nil
 }
 
-// Debouncer
+// Debouncer:
+
 let workForSelectedItemFromSettingsTable: Debouncer = Debouncer()
 
 func tableView(
@@ -104,6 +106,29 @@ func tableView(
     willSelectRowAt indexPath: IndexPath
 ) -> IndexPath? {
     workForSelectedItemFromSettingsTable.debounce(
+        delay: .milliseconds(120)
+    ) { [weak self] in
+        guard let self = self else { return }
+        // do something
+    }()
+    return nil
+}
+
+// FirstlyThrottler:
+
+// Works like Throttler but not emit last event
+// that falls into the delay interval.
+// A good example of usage is to avoid multiple click on button
+// which starts some user-facing feature like opening new screen
+// (which can be delayed because of animation, for example).
+
+let workForSelectedItemFromSettingsTable: FirstlyThrottler = FirstlyThrottler()
+
+func tableView(
+    _ tableView: UITableView, 
+    willSelectRowAt indexPath: IndexPath
+) -> IndexPath? {
+    workForSelectedItemFromSettingsTable.throttleFirst(
         delay: .milliseconds(120)
     ) { [weak self] in
         guard let self = self else { return }

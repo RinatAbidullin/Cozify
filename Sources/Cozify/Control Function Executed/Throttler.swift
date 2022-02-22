@@ -8,6 +8,7 @@
 import Foundation
 
 public class Throttler {
+    var currentWorkItem: DispatchWorkItem?
     var lastFire: TimeInterval = 0
     
     public init() {}
@@ -19,13 +20,19 @@ public class Throttler {
     ) -> () -> Void {
         return { [weak self] in
             guard let self = self else { return }
-            let delayAsTimeInterval = delay.toTimeInterval() ?? 0
-            if delayAsTimeInterval.hasPassed(since: self.lastFire) {
-                queue.async {
-                    action()
-                }
+            guard self.currentWorkItem == nil else { return }
+            self.currentWorkItem = DispatchWorkItem {
+                action()
                 self.lastFire = Date().timeIntervalSinceReferenceDate
+                self.currentWorkItem = nil
             }
+            let delayAsTimeInterval = delay.toTimeInterval() ?? 0
+            delayAsTimeInterval.hasPassed(since: self.lastFire)
+            ? queue.async(execute: self.currentWorkItem!)
+            : queue.asyncAfter(
+                deadline: .now() + delayAsTimeInterval,
+                execute: self.currentWorkItem!
+            )
         }
     }
 }
