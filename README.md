@@ -137,3 +137,15 @@ func tableView(
     return nil
 }
 ```
+
+## String
+
+```swift
+let destinationDirectory = NSSearchPathForDirectoriesInDomains(
+    .documentDirectory, .userDomainMask, true
+)
+.first!
+
+// New file path made by appending to the receiver a given string
+let destinationPath = destinationDirectory.appending(filePathComponent: "db.sqlite3")
+```
